@@ -1,0 +1,5 @@
+
+Select BIN contamination < 5
+mkdir SelectBin
+sed 's/\r//' MT8_SelectBin.txt | less | xargs -i cp {} SelectBin
+awk '$2="K19985" {print $4}' ko_abun.txt | awk 'BEGIN{FS="_"}{print $1,$2,$3,$4,$5,$6,$7}' OFS="_"
