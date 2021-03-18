@@ -3,3 +3,6 @@ Select BIN contamination < 5
 mkdir SelectBin
 sed 's/\r//' MT8_SelectBin.txt | less | xargs -i cp {} SelectBin
 awk '$2="K19985" {print $4}' ko_abun.txt | awk 'BEGIN{FS="_"}{print $1,$2,$3,$4,$5,$6,$7}' OFS="_"
+awk '$2="K19985" {print $4}' /home/disk4/20201014BACKUP/MTcleanReads/MT.spades_out/metabat/ko_abun.txt | awk 'BEGIN{FS="_"}{print $1,$2,$3,$4,$5,$6,$7}' OFS="_"| uniq | xargs -I {} grep '{}' bin.*.fa
+
+for i in *.fa;grep 'MT_one' /home/disk4/20201014BACKUP/MTcleanReads/MT.spades_out/diting_out/KEGG_annotation/ko_abun.txt | awk '$2=="K19958" {print $4}' | awk 'BEGIN{FS="_"}{print $1,$2,$3,$4,$5,$6,$7}' OFS="_"| uniq | xargs -I {} grep '{}' $i > $i.K19958.out
