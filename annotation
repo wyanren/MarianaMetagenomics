@@ -1,0 +1,14 @@
+emapper annotation
+download arCOG database:
+HMM database: download_eggnog_data.py -H -d 2157
+DIAMOND database: create_dbs.py -m diamond --dbname Archaea --taxa Archaea
+
+annotate base on DIAMOND_blast
+emapper.py -m diamond --cpu 30 --itype proteins -i MT1_bin.50.ffa --dmnd_db /home/disk2/DATABAE/eggNOG/Archaea.dmnd --output MT1_bin50
+
+annotate base on HMMER
+emapper.py -m hmmer --cpu 30 --itype proteins -i MT1_bin.50.ffa -d Archaea --output MT1_bin50_hmm
+
+annotate base on pfam_scan crossponding to pfam database
+pfam_scan.pl -fasta MT1_bin.50.ffa -dir /home/server/PfamScan/database -cpu 30 -outfile MT1_bin.50.pfam.txt
+
