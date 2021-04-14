@@ -1,3 +1,9 @@
+KEGG annotation
+parallel -j 30 prodigal -a {}.ffa -m -p meta -d {}.ffn -i {} -f gff -o {}.gff ::: *.fasta
+for i in *.ffa;nohup /home/server/kofamscan/kofam_scan/exec_annotation -f mapper -o $i.ko $i --cpu 30 &
+parallel -j 30 sed 's/^/{}_/' {}..fasta.ffa.ko ::: 
+KEGG-decoder --input all.map --output all.list -v static
+
 emapper annotation
 download arCOG database:
 HMM database: download_eggnog_data.py -H -d 2157
