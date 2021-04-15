@@ -8,7 +8,7 @@ emapper annotation
 download arCOG database:
 HMM database: download_eggnog_data.py -H -d 2157
 DIAMOND database: create_dbs.py -m diamond --dbname Archaea --taxa Archaea
-
+export EGGNOG_DATA_DIR=/home/disk2/DATABAE/eggNOG
 annotate base on DIAMOND_blast
 emapper.py -m diamond --cpu 30 --itype proteins -i MT1_bin.50.ffa --dmnd_db /home/disk2/DATABAE/eggNOG/Archaea.dmnd --output MT1_bin50
 
