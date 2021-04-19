@@ -1,4 +1,18 @@
 IP 10.157.33.67
 download fastq format raw data
-fastq-dump -I --split-files SRR9696212 SRR9696213 SRR9696214 SRR9696215 SRR9696216 SRR9696217 SRR9696233 SRR9696234 SRR9696235 SRR9696236 SRR9696237 SRR9696238 SRR9696239 SRR9696240 SRR9696241 SRR9696242
-
+fastq-dump -I --split-3 SRR9696212 SRR9696213 SRR9696214 SRR9696215 SRR9696216 SRR9696217 SRR9696233 SRR9696234 SRR9696235 SRR9696236 SRR9696237 SRR9696238 SRR9696239 SRR9696240 SRR9696241 SRR9696242
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install(version = "3.12")
+BiocManager::install("dada2",version = "3.12")
+library(dada2)
+packageVersion("dada2")
+path <-"/home/disk2/MBT/16S/"
+list.files(path)
+fnFs <- sort(list.files(path, pattern="_1.fastq", full.names = TRUE))
+fnRs <- sort(list.files(path, pattern="_2.fastq", full.names = TRUE))
+sample.names <- sapply(strsplit(basename(fnFs), "_"), `[`, 1)
+fnFs
+sample.names
+plotQualityProfile(fnFs)
+plotQualityProfile(fnRs)
