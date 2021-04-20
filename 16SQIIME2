@@ -1,0 +1,22 @@
+create manifest.txt
+manifest.txt:
+ 
+ sample-id	forward-absolute-filepath	reverse-absolute-filepath
+MT0_2cDNA	/home/disk2/MBT/16S/QIIME2/SRR9696242_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696242_2.fastq
+MT2_3cDNA	/home/disk2/MBT/16S/QIIME2/SRR9696212_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696212_2.fastq
+MT3_4cDNA	/home/disk2/MBT/16S/QIIME2/SRR9696213_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696213_2.fastq
+MT4_5cDNA	/home/disk2/MBT/16S/QIIME2/SRR9696214_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696214_2.fastq
+MT5_6cDNA	/home/disk2/MBT/16S/QIIME2/SRR9696215_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696215_2.fastq
+MT7_8cDNA	/home/disk2/MBT/16S/QIIME2/SRR9696216_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696216_2.fastq
+MT9_10cDNA	/home/disk2/MBT/16S/QIIME2/SRR9696217_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696217_2.fastq
+MT0_2DNA	/home/disk2/MBT/16S/QIIME2/SRR9696237_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696237_2.fastq
+MT2_3DNA	/home/disk2/MBT/16S/QIIME2/SRR9696238_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696238_2.fastq
+MT3_4DNA	/home/disk2/MBT/16S/QIIME2/SRR9696239_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696239_2.fastq
+MT4_5DNA	/home/disk2/MBT/16S/QIIME2/SRR9696240_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696240_2.fastq
+MT5_6DNA	/home/disk2/MBT/16S/QIIME2/SRR9696233_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696233_2.fastq
+MT6_7DNA	/home/disk2/MBT/16S/QIIME2/SRR9696234_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696234_2.fastq
+MT7_8DNA	/home/disk2/MBT/16S/QIIME2/SRR9696235_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696235_2.fastq
+MT8_9DNA	/home/disk2/MBT/16S/QIIME2/SRR9696236_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696236_2.fastq
+MT9_10DNA	/home/disk2/MBT/16S/QIIME2/SRR9696241_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696241_2.fastq
+
+qiime tools import --type 'SampleData[PairedEndSequencesWithQuality]' --input-path manifest.txt --output-path paired-end-demux.qza --input-format PairedEndFastqManifestPhred33V2
