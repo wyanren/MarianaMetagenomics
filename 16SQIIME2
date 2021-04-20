@@ -19,4 +19,8 @@ MT7_8DNA	/home/disk2/MBT/16S/QIIME2/SRR9696235_1.fastq	/home/disk2/MBT/16S/QIIME
 MT8_9DNA	/home/disk2/MBT/16S/QIIME2/SRR9696236_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696236_2.fastq
 MT9_10DNA	/home/disk2/MBT/16S/QIIME2/SRR9696241_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696241_2.fastq
 
+qiime feature-classifier extract-reads --p-n-jobs 30 --i-sequences silva-138-99-seqs.qza --p-f-primer GTGCCAGCMGCCGCGG --p-r-primer CCGTCAATTCMTTTRAGTTT --p-trunc-len 425 --p-min-length 350 --p-max-length 450 --o-reads silva-138-99-515-907.qza
+
+qiime feature-classifier fit-classifier-naive-bayes --i-reference-reads silva-138-99-515-907.qza --i-reference-taxonomy silva-138-99-tax.qza --o-classifier silva-138-99-515-907-classifier.qza
+
 qiime tools import --type 'SampleData[PairedEndSequencesWithQuality]' --input-path manifest.txt --output-path paired-end-demux.qza --input-format PairedEndFastqManifestPhred33V2
