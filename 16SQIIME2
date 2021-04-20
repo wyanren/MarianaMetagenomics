@@ -1,6 +1,5 @@
 create manifest.txt
-manifest.txt:
- 
+---------------------------------------------------------------------------------------------------------
  sample-id	forward-absolute-filepath	reverse-absolute-filepath
 MT0_2cDNA	/home/disk2/MBT/16S/QIIME2/SRR9696242_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696242_2.fastq
 MT2_3cDNA	/home/disk2/MBT/16S/QIIME2/SRR9696212_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696212_2.fastq
@@ -18,7 +17,28 @@ MT6_7DNA	/home/disk2/MBT/16S/QIIME2/SRR9696234_1.fastq	/home/disk2/MBT/16S/QIIME
 MT7_8DNA	/home/disk2/MBT/16S/QIIME2/SRR9696235_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696235_2.fastq
 MT8_9DNA	/home/disk2/MBT/16S/QIIME2/SRR9696236_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696236_2.fastq
 MT9_10DNA	/home/disk2/MBT/16S/QIIME2/SRR9696241_1.fastq	/home/disk2/MBT/16S/QIIME2/SRR9696241_2.fastq
-
+----------------------------------------------------------------------------------------------------------
+create metadata
+----------------------------------------------------------------------------------------------------------
+sample-id	sequencing-run	sample-type	treatment-group	depth	sample-order
+#q2:types	categorical	categorical	categorical	categorical	numeric
+MT0_2cDNA	SRR9696242	RNA	Sediment	0_2	1
+MT2_3cDNA	SRR9696212	RNA	Sediment	2_3	2
+MT3_4cDNA	SRR9696213	RNA	Sediment	3_4	3
+MT4_5cDNA	SRR9696214	RNA	Sediment	4_5	4
+MT5_6cDNA	SRR9696215	RNA	Sediment	5_6	5
+MT7_8cDNA	SRR9696216	RNA	Sediment	7_8	6
+MT9_10cDNA	SRR9696217	RNA	Sediment	9_10	7
+MT0_2DNA	SRR9696237	DNA	Sediment	0_2	8
+MT2_3DNA	SRR9696238	DNA	Sediment	2_3	9
+MT3_4DNA	SRR9696239	DNA	Sediment	3_4	10
+MT4_5DNA	SRR9696240	DNA	Sediment	4_5	11
+MT5_6DNA	SRR9696233	DNA	Sediment	5_6	12
+MT6_7DNA	SRR9696234	DNA	Sediment	6_7	13
+MT7_8DNA	SRR9696235	DNA	Sediment	7_8	14
+MT8_9DNA	SRR9696236	DNA	Sediment	8_9	15
+MT9_10DNA	SRR9696241	DNA	Sediment	9_10	16
+--------------------------------------------------------------------------------------------------------------
 qiime feature-classifier extract-reads --p-n-jobs 30 --i-sequences silva-138-99-seqs.qza --p-f-primer GTGCCAGCMGCCGCGG --p-r-primer CCGTCAATTCMTTTRAGTTT --p-trunc-len 425 --p-min-length 350 --p-max-length 450 --o-reads silva-138-99-515-907.qza
 
 qiime feature-classifier fit-classifier-naive-bayes --i-reference-reads silva-138-99-515-907.qza --i-reference-taxonomy silva-138-99-tax.qza --o-classifier silva-138-99-515-907-classifier.qza
@@ -26,7 +46,9 @@ qiime feature-classifier fit-classifier-naive-bayes --i-reference-reads silva-13
 qiime tools import --type 'SampleData[PairedEndSequencesWithQuality]' --input-path manifest.txt --output-path paired-end-demux.qza --input-format PairedEndFastqManifestPhred33V2
 
 qiime demux summarize --i-data paired-end-demux.qza --o-visualization paired-end-demux.qzv
-
+##########
+ASV 100% #
+##########
 qiime dada2 denoise-paired --i-demultiplexed-seqs paired-end-demux.qza --p-trunc-len-f 240 --p-trunc-len-r 220 --o-representative-sequences rep-seqs-dada2.qza --o-table table-dada2.qza --o-denoising-stats stats-dada2.qza --p-n-threads 30
 
 qiime feature-table summarize --i-table table-dada2.qza --o-visualization table-dada2.qzv  --m-sample-metadata-file metadata.txt
@@ -35,3 +57,7 @@ qiime metadata tabulate --m-input-file stats-dada2.qza --o-visualization stats-d
 qiime feature-classifier classify-sklearn --p-n-jobs 10 --i-classifier /home/disk2/DATABAE/QIIME2/silva-138-99-515-907-classifier.qza --i-reads rep-seqs-dada2.qza --o-classification taxonomy-dada2.qza
 qiime metadata tabulate --m-input-file taxonomy-dada2.qza --o-visualization taxonomy-dada2.qzv
 qiime taxa barplot --i-table table-dada2.qza --i-taxonomy taxonomy-dada2.qza --m-metadata-file metadata.txt --o-visualization taxa-bar-plots.qzv
+
+##########
+OTU 97% ##
+##########
