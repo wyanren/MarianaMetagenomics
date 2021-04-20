@@ -24,3 +24,14 @@ qiime feature-classifier extract-reads --p-n-jobs 30 --i-sequences silva-138-99-
 qiime feature-classifier fit-classifier-naive-bayes --i-reference-reads silva-138-99-515-907.qza --i-reference-taxonomy silva-138-99-tax.qza --o-classifier silva-138-99-515-907-classifier.qza
 
 qiime tools import --type 'SampleData[PairedEndSequencesWithQuality]' --input-path manifest.txt --output-path paired-end-demux.qza --input-format PairedEndFastqManifestPhred33V2
+
+qiime demux summarize --i-data paired-end-demux.qza --o-visualization paired-end-demux.qzv
+
+qiime dada2 denoise-paired --i-demultiplexed-seqs paired-end-demux.qza --p-trunc-len-f 240 --p-trunc-len-r 220 --o-representative-sequences rep-seqs-dada2.qza --o-table table-dada2.qza --o-denoising-stats stats-dada2.qza --p-n-threads 30
+
+qiime feature-table summarize --i-table table-dada2.qza --o-visualization table-dada2.qzv  --m-sample-metadata-file metadata.txt
+qiime feature-table tabulate-seqs --i-data rep-seqs-dada2.qza --o-visualization rep-seqs-dada2.qzv
+qiime metadata tabulate --m-input-file stats-dada2.qza --o-visualization stats-dada2.qzv
+qiime feature-classifier classify-sklearn --p-n-jobs 10 --i-classifier /home/disk2/DATABAE/QIIME2/silva-138-99-515-907-classifier.qza --i-reads rep-seqs-dada2.qza --o-classification taxonomy-dada2.qza
+qiime metadata tabulate --m-input-file taxonomy-dada2.qza --o-visualization taxonomy-dada2.qzv
+qiime taxa barplot --i-table table-dada2.qza --i-taxonomy taxonomy-dada2.qza --m-metadata-file metadata.txt --o-visualization taxa-bar-plots.qzv
