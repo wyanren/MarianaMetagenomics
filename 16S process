@@ -16,3 +16,54 @@ fnFs
 sample.names
 plotQualityProfile(fnFs)
 plotQualityProfile(fnRs)
+filtFs <- file.path(path, "filtered", paste0(sample.names, "_F_filt.fastq.gz"))
+filtRs <- file.path(path, "filtered", paste0(sample.names, "_R_filt.fastq.gz"))
+names(filtFs) <- sample.names
+names(filtRs) <- sample.names
+out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, truncLen=c(250,200),maxN=0, maxEE=c(2,2), truncQ=2, rm.phix=TRUE,compress=TRUE, multithread=TRUE)
+head(out)
+errF <- learnErrors(filtFs, multithread=TRUE)
+errR <- learnErrors(filtRs, multithread=TRUE)
+plotErrors(errF, nominalQ=TRUE)
+plotErrors(errR, nominalQ=TRUE)
+derepFs <- derepFastq(filtFs, verbose=TRUE)
+derepRs <- derepFastq(filtRs, verbose=TRUE)
+dadaFs <- dada(derepFs, err=errF, multithread=TRUE)
+dadaRs <- dada(derepRs, err=errR, multithread=TRUE)
+dadaFs[[1]]
+mergers <- mergePairs(dadaFs, derepFs, dadaRs, derepRs, verbose=TRUE)
+# Inspect the merger data.frame from the first sample
+head(mergers[[1]])
+seqtab <- makeSequenceTable(mergers)
+dim(seqtab)
+# 查看序列长度分布
+# Inspect distribution of sequence lengths
+table(nchar(getSequences(seqtab)))
+seqtab.nochim <- removeBimeraDenovo(seqtab, method="consensus", multithread=TRUE, verbose=TRUE)
+dim(seqtab.nochim)
+sum(seqtab.nochim)/sum(seqtab)
+
+in R
+write.table(t(seqtab.nochim), "seqtab-nochim.txt", sep="\t", row.names=TRUE, col.names=NA, quote=FALSE)
+
+in R
+uniquesToFasta(seqtab.nochim, fout='rep-seqs.fna', ids=colnames(seqtab.nochim))
+
+in q2
+qiime tools import --input-path rep-seqs.fna --type 'FeatureData[Sequence]' --output-path rep-seqs.qza
+
+in q2
+echo -n "#OTU Table" | cat - seqtab-nochim.txt > biom-table.txt
+
+in q2
+biom convert -i biom-table.txt -o table.biom --table-type="OTU table" --to-hdf5
+
+in q2
+qiime tools import --input-path table.biom --type 'FeatureTable[Frequency]' --source-format BIOMV210Format --output-path table.qza
+
+8qiime phylogeny align-to-tree-mafft-fasttree \
+  --i-sequences rep-seqs.qza \
+  --o-alignment aligned-rep-seqs.qza \
+  --o-masked-alignment masked-aligned-rep-seqs.qza \
+  --o-tree unrooted-tree.qza \
+  --o-rooted-tree rooted-tree.qza
