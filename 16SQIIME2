@@ -50,7 +50,6 @@ qiime demux summarize --i-data paired-end-demux.qza --o-visualization paired-end
 ASV 100% #
 ##########
 qiime dada2 denoise-paired --i-demultiplexed-seqs paired-end-demux.qza --p-trunc-len-f 240 --p-trunc-len-r 220 --o-representative-sequences rep-seqs-dada2.qza --o-table table-dada2.qza --o-denoising-stats stats-dada2.qza --p-n-threads 30
-
 qiime feature-table summarize --i-table table-dada2.qza --o-visualization table-dada2.qzv  --m-sample-metadata-file metadata.txt
 qiime feature-table tabulate-seqs --i-data rep-seqs-dada2.qza --o-visualization rep-seqs-dada2.qzv
 qiime metadata tabulate --m-input-file stats-dada2.qza --o-visualization stats-dada2.qzv
@@ -61,3 +60,7 @@ qiime taxa barplot --i-table table-dada2.qza --i-taxonomy taxonomy-dada2.qza --m
 ##########
 OTU 97% ##
 ##########
+qiime vsearch join-pairs --i-demultiplexed-seqs paired-end-demux.qza --o-joined-sequences paired-end-demux-joined.qza --p-threads 8
+qiime quality-filter q-score-joined --i-demux paired-end-demux-joined.qza --o-filtered-sequences paired-end-demux-joined-filtered.qza --o-filter-stats paired-end-demux-joined-filtered-stats.qza
+qiime vsearch dereplicate-sequences --i-sequences paired-end-demux-joined-filtered.qza --o-dereplicated-table dereplicate-table.qza --o-dereplicated-sequences rep-seqs-dereplicated.qza
+qiime vsearch cluster-features-open-reference --i-table dereplicate-table.qza  --i-sequences rep-seqs-dereplicated.qza --i-reference-sequences /home/disk2/DATABAE/QIIME2/silva-138-99-515-907.qza --p-perc-identity 0.97 --o-clustered-table table-or-97.qza --o-clustered-sequences rep-seqs-or-97.qza --o-new-reference-sequences new-ref-seqs-or-97.qza --p-threads 30
