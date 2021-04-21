@@ -72,3 +72,4 @@ qiime feature-table summarize --i-table uchime-97-dn-out/table-nonchimeric-wo-bo
 qiime feature-classifier classify-sklearn --p-n-jobs 10 --i-classifier /home/disk2/DATABAE/QIIME2/silva-138-99-515-907-classifier.qza --i-reads uchime-97-dn-out/rep-seqs-nonchimeric-wo-borderline.qza --o-classification uchime-97-dn-out/taxonomy-nonchimeric-wo-borderline.qza
 qiime metadata tabulate --m-input-file uchime-97-dn-out/taxonomy-nonchimeric-wo-borderline.qza --o-visualization uchime-97-dn-out/taxonomy-nonchimeric-wo-borderline.qzv
 qiime taxa barplot --i-table uchime-97-dn-out/table-nonchimeric-wo-borderline.qza --i-taxonomy uchime-97-dn-out/taxonomy-nonchimeric-wo-borderline.qza --m-metadata-file metadata.txt --o-visualization uchime-97-dn-out/taxonomy-nonchimeric-wo-borderline-plots.qzv
+qiime tools export --input-path uchime-97-dn-out/table-nonchimeric-wo-borderline.qza --output-path uchime-97-dn-out/table-nonchimeric-wo-borderline.txt
