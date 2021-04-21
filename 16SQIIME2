@@ -64,6 +64,11 @@ qiime vsearch join-pairs --i-demultiplexed-seqs paired-end-demux.qza --o-joined-
 qiime quality-filter q-score-joined --i-demux paired-end-demux-joined.qza --o-filtered-sequences paired-end-demux-joined-filtered.qza --o-filter-stats paired-end-demux-joined-filtered-stats.qza
 qiime vsearch dereplicate-sequences --i-sequences paired-end-demux-joined-filtered.qza --o-dereplicated-table dereplicate-table.qza --o-dereplicated-sequences rep-seqs-dereplicated.qza
 qiime vsearch cluster-features-open-reference --i-table dereplicate-table.qza  --i-sequences rep-seqs-dereplicated.qza --i-reference-sequences /home/disk2/DATABAE/QIIME2/silva-138-99-515-907.qza --p-perc-identity 0.97 --o-clustered-table table-or-97.qza --o-clustered-sequences rep-seqs-or-97.qza --o-new-reference-sequences new-ref-seqs-or-97.qza --p-threads 30
-qiime feature-classifier classify-sklearn --p-n-jobs 10 --i-classifier /home/disk2/DATABAE/QIIME2/silva-138-99-515-907-classifier.qza --i-reads rep-seqs-or-97.qza --o-classification taxonomy-or-97.qza
-qiime metadata tabulate --m-input-file taxonomy-or-97.qza --o-visualization taxonomy-or-97.qzv
-qiime taxa barplot --i-table table-or-97.qza --i-taxonomy taxonomy-or-97.qza --m-metadata-file metadata.txt --o-visualization taxa-or-97-bar-plots.qzv
+qiime vsearch uchime-denovo --i-table table-or-97.qza --i-sequences rep-seqs-or-97.qza --output-dir uchime-97-dn-out
+qiime metadata tabulate --m-input-file uchime-97-dn-out/stats.qza --o-visualization uchime-97-dn-out/stats.qzv
+qiime feature-table filter-features --i-table table-or-97.qza --m-metadata-file uchime-97-dn-out/nonchimeras.qza --o-filtered-table uchime-97-dn-out/table-nonchimeric-wo-borderline.qza
+qiime feature-table filter-seqs --i-data rep-seqs-or-97.qza --m-metadata-file uchime-97-dn-out/nonchimeras.qza --o-filtered-data uchime-97-dn-out/rep-seqs-nonchimeric-wo-borderline.qza
+qiime feature-table summarize --i-table uchime-97-dn-out/table-nonchimeric-wo-borderline.qza --o-visualization uchime-97-dn-out/table-nonchimeric-wo-borderline.qzv
+qiime feature-classifier classify-sklearn --p-n-jobs 10 --i-classifier /home/disk2/DATABAE/QIIME2/silva-138-99-515-907-classifier.qza --i-reads uchime-97-dn-out/rep-seqs-nonchimeric-wo-borderline.qza --o-classification uchime-97-dn-out/taxonomy-nonchimeric-wo-borderline.qza
+qiime metadata tabulate --m-input-file uchime-97-dn-out/taxonomy-nonchimeric-wo-borderline.qza --o-visualization uchime-97-dn-out/taxonomy-nonchimeric-wo-borderline.qzv
+qiime taxa barplot --i-table uchime-97-dn-out/table-nonchimeric-wo-borderline.qza --i-taxonomy uchime-97-dn-out/taxonomy-nonchimeric-wo-borderline.qza --m-metadata-file metadata.txt --o-visualization uchime-97-dn-out/taxonomy-nonchimeric-wo-borderline-plots.qzv
