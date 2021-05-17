@@ -1,0 +1,39 @@
+kraken2个人数据库建立
+a、准备好自己的基因组文件
+b、下载NCBI的基因组taxonomy文件
+kraken2-build --download-taxonomy --db $DBNAME
+c、下载NCBI的library信息
+kraken2-build --download-library bacteria --db $DBNAME
+#b和c步骤都是我已有的，所以就没有使用
+d、用taxa dump edit来更改taxonomy文件夹里面的names.dmp和nodes.dmp
+Thaumarchaeota_MT7
+perl taxdump_edit.pl -names ~/MY_Kraken_db/custom_DATABASE_0419/test/taxonomy/names.dmp -nodes ~/MY_Kraken_db/custom_DATABASE_0419/test/taxonomy/nodes.dmp -taxa MT7 -parent 1298885 -rank species -division 11
+Your calculated TaxID = 3796146. Please use this with makeblastdb and your fasta sequences.
+>genome|kraken:taxid|3796146 MT7
+Thaumarchaeota_MTB
+perl taxdump_edit.pl -names ~/MY_Kraken_db/custom_DATABASE_0419/test/taxonomy/names.dmp -nodes ~/MY_Kraken_db/custom_DATABASE_0419/test/taxonomy/nodes.dmp -taxa MTB -parent 1298885 -rank species -division 11
+Your calculated TaxID = 4796146. Please use this with makeblastdb and your fasta sequences.
+>genome|kraken:taxid|4796146 MTB
+Thaumarchaeota_MT1
+Thaumarchaeota archaeon BS4	1434080
+perl taxdump_edit.pl -names ~/MY_Kraken_db/custom_DATABASE_0419/test/taxonomy/names.dmp -nodes ~/MY_Kraken_db/custom_DATABASE_0419/test/taxonomy/nodes.dmp -taxa MT1 -parent 1434080 -rank species -division 11
+Your calculated TaxID = 5796146. Please use this with makeblastdb and your fasta sequences.
+>genome|kraken:taxid|5796146 MT1
+e、将这些基因组加进去
+kraken2-build --add-to-library Salmonella_enterica-XXXXX.fa --db $DBNAME
+f、建立数据库
+kraken2-build --build --db $DBNAME
+done
+
+
+
+
+
+
+
+
+
+
+
+
+
